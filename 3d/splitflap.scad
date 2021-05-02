@@ -437,10 +437,10 @@ module motor_mount() {
     }
 }
 
-module backstop_bolt_slot(radius) {
+module backstop_bolt_slot(radius, extra_range=0) {
     hull() {
         circle(r=radius, $fn=15);
-        translate([0, backstop_bolt_forward_range]) {
+        translate([0, backstop_bolt_forward_range+extra_range]) {
             circle(r=radius, $fn=15);
         }
     }
@@ -479,6 +479,13 @@ module enclosure_left() {
                     }
                 }
             }
+            
+            //@bdb reduce material
+            hull(){
+                translate([20, enclosure_length - front_forward_offset]) circle(r=15);
+             translate([25, enclosure_length - front_forward_offset]) circle(r=15);
+            }
+            
         }
     }
 }
@@ -560,7 +567,17 @@ module enclosure_right() {
                 translate([enclosure_height_upper - backstop_bolt_vertical_offset, enclosure_length_right - front_forward_offset, 0]) {
                     backstop_bolt_slot(radius = m4_hole_diameter/2);
                 }
+            
+            
+                
+            echo(enclosure_height_upper-backstop_bolt_vertical_offset);
+          //@bdb Material reduction by large slot in foot
+                extra_range=10;
+               translate([127, enclosure_length_right - front_forward_offset-extra_range, 0]) {
+                    backstop_bolt_slot(radius = 7, extra_range=extra_range);
+                }
             }
+            
         }
         
         
