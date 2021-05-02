@@ -686,9 +686,17 @@ module enclosure_top() {
     }
 }
 
-module enclosure_base() {
+module enclosure_base(h=40) {
+    
+    
     linear_extrude(height = 2) {
-        square([66, 40]);
+        difference(){
+            square([flap_width+12, h]);
+            hull(){
+                translate([20,20])circle(r=12);
+                translate([flap_width-8,20])circle(r=12);
+            }
+        }
     }
 }
 
