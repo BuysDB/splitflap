@@ -31,17 +31,26 @@ include<pcb.scad>;
 render_3d = true;
 
 // 3d parameters:
-render_enclosure = 2; // 0=invisible; 1=translucent; 2=opaque color;
-render_flaps = 2; // 0=invisible; 1=front flap only; 2=all flaps
+render_enclosure = 0; // 0=invisible; 1=translucent; 2=opaque color;
+render_flaps = 1; // 0=invisible; 1=front flap only; 2=all flaps
 render_flap_area = 0; // 0=invisible; 1=collapsed flap exclusion; 2=collapsed+extended flap exclusion
-render_letters = "YO";
+render_letters = " ";
+
+prevletter = "0";
+curletter = render_letters;
+nextletter = "9";
+
+
 render_units = len(render_letters);
 render_unit_separation = 0;
-render_pcb = true;
-render_bolts = true;
-render_motor = true;
-render_main_spool = true;
-render_secondary_spool = true;
+render_pcb = false;
+render_bolts = false;
+render_motor = false;
+render_main_spool = false;
+render_secondary_spool = false;
+
+render_flap_letter = false;
+render_flap_main = !render_flap_letter;
 
 
 
@@ -445,6 +454,9 @@ module backstop_bolt_slot(radius, extra_range=0) {
         }
     }
 }
+
+
+
 
 module enclosure_left() {
     linear_extrude(height=thickness) {
@@ -859,10 +871,20 @@ module split_flap_3d(letter, include_connector) {
         }
     }
 
+    
+    
+    //@bdb we also need the next and previous letters to be printed on both sides of the flap
+
+    
+    letter_thickness=0.3; // @bdb
+    
+    //@bdb the TOP half card has CURRLETER on the front, and NEXTLETTER(bottom) on the back
     module letter_top_half() {
         rotate([-90, 0, 0]) {
             rotate([0, 0, 180]) {
-                linear_extrude(height=0.1, center=true) {
+                translate([0,0,-letter_thickness*0.5+0.01])
+                
+                linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, -flap_pin_width/2]) {
                         difference() {
                             text(text=letter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
@@ -874,12 +896,37 @@ module split_flap_3d(letter, include_connector) {
                 }
             }
         }
+        //back: @ bdb
+         rotate([90, 0, 0]) {
+            rotate([0, 0, 180]) {
+                
+                translate([0,0,flap_thickness-letter_thickness*0.5+0.01])
+                linear_extrude(height=letter_thickness, center=true) {
+                    translate([-flap_width / 2, flap_pin_width/2]) {
+                        difference() {
+                            text(text=nextletter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
+                            translate([-flap_width, eps]) {
+                                square([2 * flap_width, flap_height]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
     }
-
+    
+    
+    
     module letter_bottom_half() {
+        
+        //@bdb the BOTTOM half card has CURRLETER(bottom) on the front, and PREVLETTER(top) on the back
+        
         rotate([-90, 0, 0]) {
             rotate([0, 0, 180]) {
-                linear_extrude(height=0.1, center=true) {
+                
+                translate([0,0,-letter_thickness*0.5+0.01])
+                linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, flap_pin_width/2]) {
                         difference() {
                             text(text=letter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
@@ -891,6 +938,27 @@ module split_flap_3d(letter, include_connector) {
                 }
             }
         }
+        
+        
+       rotate([90, 0, 0]) {
+            rotate([0, 0, 180]) {
+                translate([0,0,flap_thickness-letter_thickness*0.5+0.01])
+                
+                linear_extrude(height=letter_thickness, center=true) {
+                    translate([-flap_width / 2, -flap_pin_width/2]) {
+                        difference() {
+                            text(text=prevletter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
+                            translate([-flap_width, -flap_height - eps]) {
+                                square([2 * flap_width, flap_height]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+      
+        
     }
 
     translate([spool_width_slop/2 + thickness, 0, 0]) {
@@ -913,12 +981,26 @@ module split_flap_3d(letter, include_connector) {
                 // Collapsed flaps on the top
                 for (i=[0:num_flaps/2 - 1]) {
                     if (i == 0 || render_flaps == 2) {
-                        rotate([360/num_flaps * i, 0, 0]) translated_flap();
+                        if (i==0){
+                            if(render_flap_main){
+                                difference(){
+                                    rotate([360/num_flaps * i, 0, 0]) translated_flap();
+                                    
+                                    translate([0, flap_pitch_radius + flap_thickness/2, 0]) {
+                                        letter_top_half();
+                                    }
+                                }
+                                }
+                        } else {
+                            rotate([360/num_flaps * i, 0, 0]) translated_flap();
+                        }
                     }
                     if (i == 0) {
                         color([0,0,0]) {
                             translate([0, flap_pitch_radius + flap_thickness/2, 0]) {
-                                letter_top_half();
+                                if(render_flap_letter){
+                                    letter_top_half();
+                                }
                             }
                         }
                     }
@@ -926,16 +1008,28 @@ module split_flap_3d(letter, include_connector) {
 
                 for (i=[1:num_flaps/2]) {
                     angle = -360/num_flaps*i;
-                    translate([0, flap_pitch_radius*cos(angle), flap_pitch_radius * sin(angle)]) {
-                        if (i == 1 || render_flaps == 2) {
-                            rotate([-90, 0, 0]) {
-                                flap();
+                    //translate([0, flap_pitch_radius*cos(angle), flap_pitch_radius * sin(angle)]) {
+                    translate([0, flap_pitch_radius*cos(angle)+flap_thickness*0.35, flap_pitch_radius * sin(angle)]) {
+                        if ((i == 1 || render_flaps == 2)) {
+                                
+                                if(render_flap_main){
+                                difference(){
+                                    rotate([-90, 0, 0])flap();
+                                       
+                                    // Cut out the letter:
+                                    translate([0, flap_thickness/2, 0]) 
+                                        letter_bottom_half();
+                                    
+                                }
                             }
+                            
                         }
                         if (i == 1) {
                             color([0,0,0]) {
                                 translate([0, flap_thickness/2, 0]) {
-                                    letter_bottom_half();
+                                    if(render_flap_letter){
+                                        letter_bottom_half();
+                                    }
                                 }
                             }
                         }
