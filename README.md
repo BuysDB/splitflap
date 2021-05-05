@@ -1,10 +1,12 @@
 # DIY Split-Flap Display
 
-This project has been forked from [https://github.com/scottbez1/splitflap](https://github.com/scottbez1/splitflap). Most of the design work, electronics and software was designed by ScottBez1 so he deserves a lot of thanks.
+This project has been forked from [https://github.com/NilSkilz/splitflap] which has been forked from [https://github.com/scottbez1/splitflap](https://github.com/scottbez1/splitflap). Most of the design work, electronics and software was designed by ScottBez1 so he deserves a lot of thanks. 
+[https://github.com/NilSkilz](NilSkilz) made the base 3d printable.
 
-I've modified the project to be 3D printable (the original used laser cut MDF), and simplified the readme and wiki somewhat.
-
-My intention is to get build a 12 module panel that is controlled over wifi via a simple iOS app and integrated with Home Assistant.
+What I (BuysDB) has done far  (This fork):
+- made the base NilSkilz made less solid to reduce printing time and material consumption
+- created multi-material 3d printable flaps, removing the need for the PVC cards.
+- Added dummy stepper motor because mine did not come in yet.
 
 ### Design Highlights ###
 * 3D Printed in three simple parts
@@ -13,36 +15,6 @@ My intention is to get build a 12 module panel that is controlled over wifi via 
 * Control up to 12 modules from a single Arduino
 
 Most of the documentation has now been moved to the [Wiki](https://github.com/NilSkilz/splitflap/wiki)
-
-
-![animated rendering](https://github.com/NilSkilz/splitflap/blob/master/docs/animation.gif)
-
-
-### Cost Breakdown ###
-
-Requirements:
-- 3D Printer (I picked mine up for less than $200)
-- Inkjet Printer capable of printing ID cards. See [here](https://brainstormidsupply.com/inkjet-id-cards/kits-cards-trays) for a list of compatible printers
-- Inkjet Pinter Tray - around $20
-- Soldering Iron, Files, cutting knife
-
-| Item        | Quantity           | Total Price  |
-| ------------- |:-------------:| -----:|
-| 3D printed parts     | 12 | $30 |
-| 28BYJ-48 motor [link](https://www.aliexpress.com/item/10PCS-LOT-28BYJ-48-Lead-25cm-Stepper-Motor-DC-5V-4-Phase-Step-Motor-Reduction-Newest/32602045093.html?spm=a2g0s.9042311.0.0.37e84c4dhdhRja)    | 12      |   $17 |
-| ID Cards [link](https://www.amazon.co.uk/gp/product/B07C3LLKK9/ref=oh_aui_detailpage_o02_s00?ie=UTF8&psc=1) | 250      |    $53 |
-| Printer ink (Optional) | 4      |    $70 | (only needed if printing white text on black background)
-| PCB Printing | 1      |    $37 |
-| Electronic Components |      |    ~$75 | (Could be cheaper ordering certain things from China)
-| 3 pin Servo Extension | 12     |    ~$15 |
-| 12v 8a power supply | 12     |    ~$19 |
-| ESP8266 module | 1     |    ~$6 |
-| Arduino Uno | 1     |    ~$35 |
-| ID Card Punch [link](https://www.amazon.co.uk/gp/product/B01C3ZXAQ0/ref=oh_aui_detailpage_o04_s00?ie=UTF8&psc=1)| 1     |    ~$12 |
-| Total | | $369 |
-
-
-
 
 
 ## License ##
