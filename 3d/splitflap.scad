@@ -34,12 +34,17 @@ render_3d = true;
 render_enclosure = 0; // 0=invisible; 1=translucent; 2=opaque color;
 render_flaps = 1; // 0=invisible; 1=front flap only; 2=all flaps
 render_flap_area = 0; // 0=invisible; 1=collapsed flap exclusion; 2=collapsed+extended flap exclusion
-render_letters = " ";
 
-prevletter = "0";
+
+prevletter = "9";
+render_letters = "W";
 curletter = render_letters;
-nextletter = "9";
-
+nextletter = "B";
+render_flap_letter = 0;
+//FONT = "Ubuntu Mono:style=Bold";
+//FONT = "Latin Modern Mono";
+//FONT = "Ubuntu Mono";
+FONT = "Roboto Mono";
 
 render_units = len(render_letters);
 render_unit_separation = 0;
@@ -49,7 +54,7 @@ render_motor = false;
 render_main_spool = false;
 render_secondary_spool = false;
 
-render_flap_letter = false;
+Y_FLAP_ROTATION=0;
 render_flap_main = !render_flap_letter;
 
 
@@ -100,7 +105,7 @@ assembly_color4 = [.4, .4, .4]; //"34291D";
 
 flap_rendered_angle = 90;
 
-letter_height = flap_height * 0.75 * 2;
+letter_height = flap_height * 0.75 * 1.8; // was 2
 
 // Amount of slop of the flap side to side between the 2 spools
 flap_width_slop = 1;
@@ -887,7 +892,7 @@ module split_flap_3d(letter, include_connector) {
                 linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, -flap_pin_width/2]) {
                         difference() {
-                            text(text=letter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
+                            text(text=letter, size=letter_height, font=FONT, halign="center", valign="center");
                             translate([-flap_width, -flap_height - eps]) {
                                 square([2 * flap_width, flap_height]);
                             }
@@ -904,7 +909,7 @@ module split_flap_3d(letter, include_connector) {
                 linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, flap_pin_width/2]) {
                         difference() {
-                            text(text=nextletter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
+                            text(text=nextletter, size=letter_height, font=FONT, halign="center", valign="center");
                             translate([-flap_width, eps]) {
                                 square([2 * flap_width, flap_height]);
                             }
@@ -929,7 +934,7 @@ module split_flap_3d(letter, include_connector) {
                 linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, flap_pin_width/2]) {
                         difference() {
-                            text(text=letter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
+                            text(text=letter, size=letter_height, font=FONT, halign="center", valign="center");
                             translate([-flap_width, eps]) {
                                 square([2 * flap_width, flap_height]);
                             }
@@ -947,7 +952,7 @@ module split_flap_3d(letter, include_connector) {
                 linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, -flap_pin_width/2]) {
                         difference() {
-                            text(text=prevletter, size=letter_height, font="RobotoCondensed", halign="center", valign="center");
+                            text(text=prevletter, size=letter_height, font=FONT, halign="center", valign="center");
                             translate([-flap_width, -flap_height - eps]) {
                                 square([2 * flap_width, flap_height]);
                             }
@@ -1109,7 +1114,7 @@ if (render_3d) {
     
     for (i = [0 : render_units - 1]) {
         translate([-enclosure_width/2 + (-(render_units-1) / 2 + i)*(enclosure_width + render_unit_separation), 0, 0])
-            split_flap_3d(render_letters[render_units - 1 - i], include_connector=(i != render_units - 1));
+            rotate([Y_FLAP_ROTATION,0,0])split_flap_3d(render_letters[render_units - 1 - i], include_connector=(i != render_units - 1));
     }
 } else {
     sp = 5;
