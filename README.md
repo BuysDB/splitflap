@@ -5,7 +5,7 @@ This project has been forked from https://github.com/NilSkilz/splitflap which ha
 
 What I (BuysDB) have done so far  (This fork):
 - made the base NilSkilz made less solid to reduce printing time and material consumption
-- created multi-material 3d printable flaps, removing the need for the PVC cards.
+- created multi-material 3d printable flaps, removing the need for the PVC cards. (I am using the Prusa MK3s MMU2)
 - Added dummy stepper motor because mine did not arrive yet.
 
 ![Image of multi material 3d-printed split-flaps](https://raw.githubusercontent.com/BuysDB/splitflap/master/pictures/multi_material_splitflap.jpg)
