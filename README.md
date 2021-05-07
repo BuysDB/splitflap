@@ -1,12 +1,15 @@
 # DIY Split-Flap Display
 
-This project has been forked from [https://github.com/NilSkilz/splitflap] which has been forked from [https://github.com/scottbez1/splitflap](https://github.com/scottbez1/splitflap). Most of the design work, electronics and software was designed by ScottBez1 so he deserves a lot of thanks. 
+This project has been forked from https://github.com/NilSkilz/splitflap which has been forked from [https://github.com/scottbez1/splitflap](https://github.com/scottbez1/splitflap). Most of the design work, electronics and software was designed by ScottBez1 so he deserves a lot of thanks. 
 [NilSkilz](https://github.com/NilSkilz) made the base 3d printable.
 
 What I (BuysDB) have done so far  (This fork):
 - made the base NilSkilz made less solid to reduce printing time and material consumption
 - created multi-material 3d printable flaps, removing the need for the PVC cards.
-- Added dummy stepper motor because mine did not come in yet.
+- Added dummy stepper motor because mine did not arrive yet.
+
+![Image of multi material 3d-printed split-flaps](https://raw.githubusercontent.com/BuysDB/splitflap/master/pictures/multi_material_splitflap.jpg)
+
 
 ### Design Highlights ###
 * 3D Printed in three simple parts
