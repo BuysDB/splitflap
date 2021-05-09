@@ -31,22 +31,24 @@ include<pcb.scad>;
 render_3d = true;
 
 // 3d parameters:
-render_enclosure = 0; // 0=invisible; 1=translucent; 2=opaque color;
-render_flaps = 1; // 0=invisible; 1=front flap only; 2=all flaps
+render_enclosure = 2; // 0=invisible; 1=translucent; 2=opaque color;
+render_flaps = 0; // 0=invisible; 1=front flap only; 2=all flaps
 render_flap_area = 0; // 0=invisible; 1=collapsed flap exclusion; 2=collapsed+extended flap exclusion
 
 
-prevletter = "9";
-render_letters = "W";
+flap_width = 54*3;
+
+prevletter = "JAN";
+render_letters = "FEB";
 curletter = render_letters;
-nextletter = "B";
+nextletter = "MRT";
 render_flap_letter = 0;
 //FONT = "Ubuntu Mono:style=Bold";
 //FONT = "Latin Modern Mono";
 //FONT = "Ubuntu Mono";
 FONT = "Roboto Mono";
 
-render_units = len(render_letters);
+render_units = 1;
 render_unit_separation = 0;
 render_pcb = false;
 render_bolts = false;
@@ -105,7 +107,7 @@ assembly_color4 = [.4, .4, .4]; //"34291D";
 
 flap_rendered_angle = 90;
 
-letter_height = flap_height * 0.75 * 1.8; // was 2
+letter_height = flap_height * 0.75 * 1.9; // was 2
 
 // Amount of slop of the flap side to side between the 2 spools
 flap_width_slop = 1;
@@ -808,11 +810,11 @@ module split_flap_3d(letter, include_connector) {
             connector();
         }
         
-        translate([75.4, 15.2, 40]) {
+        translate([21.4+flap_width, 15.2, 40]) {
             connector(nut=true);
         }
         
-        translate([75.4, 15.2, -60]) {
+        translate([21.4+flap_width, 15.2, -60]) {
             connector();
         }
     }
@@ -892,7 +894,7 @@ module split_flap_3d(letter, include_connector) {
                 linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, -flap_pin_width/2]) {
                         difference() {
-                            text(text=letter, size=letter_height, font=FONT, halign="center", valign="center");
+                            text(text=curletter, size=letter_height, font=FONT, halign="center", valign="center");
                             translate([-flap_width, -flap_height - eps]) {
                                 square([2 * flap_width, flap_height]);
                             }
@@ -934,7 +936,7 @@ module split_flap_3d(letter, include_connector) {
                 linear_extrude(height=letter_thickness, center=true) {
                     translate([-flap_width / 2, flap_pin_width/2]) {
                         difference() {
-                            text(text=letter, size=letter_height, font=FONT, halign="center", valign="center");
+                            text(text=curletter, size=letter_height, font=FONT, halign="center", valign="center");
                             translate([-flap_width, eps]) {
                                 square([2 * flap_width, flap_height]);
                             }
